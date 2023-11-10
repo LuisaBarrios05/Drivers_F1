@@ -15,15 +15,15 @@ const getTeams = async () => {
         const team = driverInfo.teams;
         if (team) {
           let teamArray;
-          if (team.includes(", ")) {
-            // si hay espacio despues de la coma.
-            teamArray = team.split(", ").map((t) => t.trim());
-          } else {
-            //si no hay espacio despues de la coma. SIGUE SIN FUNCIONAR ESTO.
+          if (team.includes(",")) {
+            // si no hay espacio despues de la coma.
             teamArray = team.split(",").map((t) => t.trim());
+            teamArray.forEach((t) => teamsSet.add(t));
+          } else {
+            //si es un solo team.
+            teamsSet.add(team);
           }
-
-          teamArray.forEach((t) => teamsSet.add(t));
+          console.log(teamArray);
         }
       });
 

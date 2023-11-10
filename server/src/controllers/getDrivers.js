@@ -30,24 +30,30 @@ const getDrivers = async () => {
   //DB
   try {
     const driverDb = await Driver.findAll({
-      include: {
-        model: Team,
-      },
+      include: [
+        {
+          model: Team,
+          attributes: ["name"],
+        },
+      ],
     });
 
     driversDB = driverDb.map((driver) => {
+      console.log("Driver from DB:", driver.toJSON());
       const image =
         driver.image ||
         "https://i.pinimg.com/originals/47/39/e3/4739e35380949bf5e22983a8c5adc3f8.jpg";
       return {
         id: driver.id,
-        name: driversInfo.name,
-        surname: driversInfo.name.surname,
-        description: driversInfo.description,
+        name: driver.name,
+        surname: driver.surname,
+        description: driver.description,
         image: image,
-        nationality: driversInfo.nationality,
-        dob: driversInfo.dob,
-        teams: driversInfo.teams.map((t) => t.name).join(","),
+        nationality: driver.nationality,
+        dob: driver.dob,
+        //teams: driver.Teams,
+        // teams: driver.teams ? driver.teams.map((t) => t.name).join(",") : "",
+        teams: driver.Teams.map((t) => t.name).join(","),
       };
     });
   } catch (error) {

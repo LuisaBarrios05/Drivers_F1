@@ -4,6 +4,7 @@ const { Driver, Team } = require("../db");
 
 const getDriversByName = async (name) => {
   const capitalizeFirstLetter = (string) => {
+    string = string.toLowerCase();
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
   name = capitalizeFirstLetter(name);
@@ -46,6 +47,22 @@ const getDriversByName = async (name) => {
       include: {
         model: Team,
       },
+    });
+
+    foundDriversDB = foundDriversDB.map((driver) => {
+      const image =
+        driver.image ||
+        "https://i.pinimg.com/originals/47/39/e3/4739e35380949bf5e22983a8c5adc3f8.jpg";
+      return {
+        id: driver.id,
+        name: driver.name,
+        surname: driver.surname,
+        description: driver.description,
+        image: image,
+        nationality: driver.nationality,
+        dob: driver.dob,
+        teams: driver.Teams.map((t) => t.name).join(","),
+      };
     });
   } catch (error) {
     console.log(error);
