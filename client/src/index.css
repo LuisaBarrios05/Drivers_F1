@@ -5,7 +5,12 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+ 
+  background-image: url('https://occ-0-2794-2219.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABXYOkBZshppB0pXok4hignnT_oI4xNmlNq8b_dmt5zyrF_xzipzBI4znzz243mg9JktVAWl3Q3BrV5YB6xsnRlGpJJL8zs7feima.jpg?r=009'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh; 
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

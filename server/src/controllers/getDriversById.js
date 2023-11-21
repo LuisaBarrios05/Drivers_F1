@@ -9,7 +9,6 @@ const getDriversById = async (id) => {
 
   //API local
   if (idRegex.test(id)) {
-    console.log("aca API");
     try {
       if (!id) {
         throw new Error("ID is invalid");
@@ -34,17 +33,26 @@ const getDriversById = async (id) => {
   }
 
   //DB
-
+  console.log("inicio de db");
   try {
     const driverByUuid = await Driver.findOne({ where: { id: id } });
 
     const teamAsociados = await driverByUuid.getTeams();
 
-    driverByUuid.dataValues.teamAsociados.map((t) => t.name);
+    const driversByIdDB = {
+      id: driverByUuid.id,
+      name: driverByUuid.name,
+      surname: driverByUuid.surname,
+      description: driverByUuid.description,
+      image: driverByUuid.image,
+      nationality: driverByUuid.nationality,
+      dob: driverByUuid.dob,
+      teams: teamAsociados.map((t) => t.name).join(", "),
+    };
 
-    return driverByUuid;
+    return driversByIdDB;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 module.exports = getDriversById;

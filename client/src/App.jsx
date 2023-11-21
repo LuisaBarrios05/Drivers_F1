@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import Landing from "./Views/Landing/Landing";
+import Home from "./Views/Home/Home";
+import NavBar from "./Components/NavBar/NavBar";
+import Detail from "./Views/Detail/Detail";
+import { Routes, Route, useLocation } from "react-router-dom";
+import {
+  getDrivers,
+  getDriversByName,
+  getDriversDetails,
+} from "./Redux/actions";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDrivers());
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      {/* {pathname !== "/" && pathname !== "/detail/:id" && (
+        <NavBar getDriversByName={getDriversByName} />
+      )} */}
+      {pathname !== "/" && !pathname.startsWith("/detail/") && (
+        <NavBar getDriversByName={getDriversByName} />
+      )}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
+        <Route
+          path="/detail/:id"
+          element={<Detail getDriversDetails={getDriversDetails} />}
+        />
+        {/* <Route path="/create" element={<Create/>}/>  */}
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

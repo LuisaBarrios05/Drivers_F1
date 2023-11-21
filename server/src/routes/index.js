@@ -7,7 +7,7 @@ const getTeamsHandler = require("../handlers/getTeamsHandler");
 
 const router = Router();
 
-router.post("/drivers", postDriversHandler);
+router.post("/drivers", postDriversHandler); //http://localhost:3001/drivers
 router.get("/drivers", getDriversHandler); //http://localhost:3001/drivers
 router.get("/drivers/name", getDriversByNameHandler); //http://localhost:3001/drivers/name?name=lewis
 router.get("/drivers/teams", getTeamsHandler); //http://localhost:3001/drivers/teams

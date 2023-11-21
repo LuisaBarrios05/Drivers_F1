@@ -15,11 +15,13 @@ const getDrivers = async () => {
         id: driversInfo.id,
         name: driversInfo.name.forename,
         surname: driversInfo.name.surname,
-        description: driversInfo.description,
-        image: driversInfo.image.url,
+        description: driversInfo.description || "No have description.",
+        image:
+          driversInfo.image.url ||
+          "https://i.pinimg.com/originals/47/39/e3/4739e35380949bf5e22983a8c5adc3f8.jpg",
         nationality: driversInfo.nationality,
         dob: driversInfo.dob,
-        teams: driversInfo.teams,
+        teams: driversInfo.teams || "No have teams.",
       };
       driversAPI.push(driver);
     }
@@ -47,10 +49,10 @@ const getDrivers = async () => {
         id: driver.id,
         name: driver.name,
         surname: driver.surname,
-        description: driver.description,
+        description: driver.description || "No have description.",
         image: image,
-        nationality: driver.nationality,
-        dob: driver.dob,
+        nationality: driver.nationality || "No have nationality.",
+        dob: driver.dob || "No have birthdate.",
         //teams: driver.Teams,
         // teams: driver.teams ? driver.teams.map((t) => t.name).join(",") : "",
         teams: driver.Teams.map((t) => t.name).join(","),
