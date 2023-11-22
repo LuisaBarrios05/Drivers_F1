@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-
+import { Btn, Input } from "./SearchBarStyles";
 export default function SearchBar({ getDriversByName }) {
   const [name, setName] = useState("");
 
@@ -8,17 +8,22 @@ export default function SearchBar({ getDriversByName }) {
     setName(event.target.value);
   }
 
+  function handleGetDriversByName() {
+    dispatch(getDriversByName(name));
+    setName("");
+  }
+
   const dispatch = useDispatch();
   return (
     <div>
-      <input
+      <Input
         onChange={handleChange}
         type="search"
         name="search"
         value={name}
         placeholder="Ingrese nombre"
       />
-      <button onClick={() => dispatch(getDriversByName(name))}>Search</button>
+      <Btn onClick={handleGetDriversByName}>Search</Btn>
     </div>
   );
 }

@@ -33,10 +33,15 @@ export const getDriversByName = (name) => {
       const response = await axios.get(
         `http://localhost:3001/drivers/name?name=${name}`
       );
-      dispatch({
-        type: GET_DRIVERS_BY_NAME,
-        payload: response.data,
-      });
+
+      if (!response.data.length) {
+        window.alert("No se obtuvieron resultados.");
+      } else {
+        dispatch({
+          type: GET_DRIVERS_BY_NAME,
+          payload: response.data,
+        });
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -95,7 +100,7 @@ export const orderByName = (selection) => {
 export const orderByBirthday = (selection) => {
   return async (dispatch, getState) => {
     try {
-      const drivers = getState().drivers;
+      const drivers = getState().driversCopy;
       const driversCopy = [...drivers];
 
       driversCopy.sort((a, b) => {
@@ -199,4 +204,19 @@ export const filterByOrigin = (selection) => {
 
 //POST_DRIVERS
 
-export const postDrivers = () => {};
+export const postDrivers = (form) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post("http://localhost:3001/drivers", form);
+
+      dispatch({
+        type: POST_DRIVERS,
+        payload: response.data,
+      });
+
+      console.log("Driver created successfully", response.data);
+    } catch (error) {
+      console.error("Error creating driver", error);
+    }
+  };
+};

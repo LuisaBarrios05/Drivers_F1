@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const CardContainer = styled.div`
-  background-color: rgba(5, 0, 0, 0.6);
-  border-radius: 15px;
+  background-color: rgba(5, 0, 0, 0.8);
+  border-radius: 10px;
   padding: 5px;
   margin: 5px;
-  margin-top: 30px;
+  margin-top: 20px;
   cursor: pointer;
   display: inline-block;
   flex: 0 0 auto;
@@ -20,6 +20,12 @@ export const CardContainer = styled.div`
   &:hover {
     transform: translateY(-3%);
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  h2 {
+    font-weight: 500;
+    color: white;
+    text-decoration: inherit;
   }
 `;
 

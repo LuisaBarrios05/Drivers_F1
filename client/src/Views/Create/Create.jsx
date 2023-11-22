@@ -1,7 +1,20 @@
-import { useState } from "react";
-import { validate } from "./validation";
+import { useEffect, useState } from "react";
+import { getTeams, postDrivers } from "../../Redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ContainerForm,
+  LabelForm,
+  SubmitBtn,
+  TagForm,
+  InputForm,
+  TeamsContainer,
+  BackLink,
+} from "./CreateStyles";
+import { countries } from "./countries.json";
 
 const Create = () => {
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     name: "",
     surname: "",
@@ -12,49 +25,101 @@ const Create = () => {
     teams: [],
   });
 
+  useEffect(() => {
+    dispatch(getTeams());
+  }, []);
+
+  const teams = useSelector((state) => state.teams);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+    validate(name, value);
   };
 
-  const handleTeamChange = (e) => {
-    const selectedTeams = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setForm({ ...form, teams: selectedTeams });
-  };
+  const handleTeamCheckboxChange = (team) => {
+    const isSelected = form.teams.includes(team);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/drivers",
-        formData
-      );
-      console.log("Driver created successfully", response.data);
-    } catch (error) {
-      console.error("Error creating driver", error);
+    if (isSelected) {
+      // Si el equipo ya está seleccionado, quitarlo de la lista
+      setForm({ ...form, teams: form.teams.filter((t) => t !== team) });
+    } else {
+      // Si el equipo no está seleccionado, agregarlo a la lista
+      setForm({ ...form, teams: [...form.teams, team] });
     }
+  };
+
+  const handleSubmit = () => {
+    dispatch(postDrivers(form));
   };
 
   //estado de errores, almacena errores.
   const [errors, setErrors] = useState({
-    name: "Campo requerido",
-    surname: "Campo requerido",
+    name: "Campo requerido.",
+    surname: "Campo requerido.",
     description: "",
     image: "",
     nationality: "",
     dob: "",
-    teams: "",
+    teams: "Debe seleccionar al menos un equipo.",
   });
+
+  //validation
+  const validate = (name, value) => {
+    switch (name) {
+      case "name":
+        if (value === "") setErrors({ ...errors, name: "Campo requerido" });
+        else if (value.length > 20)
+          setErrors({ errors, name: "Máximo 20 caracteres." });
+        else setErrors({ ...errors, name });
+        break;
+
+      case "surname":
+        if (value === "") setErrors({ ...errors, surname: "Campo requerido" });
+        else if (value.length > 20)
+          setErrors({ errors, surname: "Máximo 20 caracteres." });
+        else setErrors({ ...errors, surname });
+        break;
+
+      case "description":
+        break;
+
+      case "image":
+        if (value === "") setErrors({ ...errors, image: "Campo requerido" });
+        else if (!isValidUrl(value))
+          setErrors({ ...errors, image: "URL no válida" });
+        else setErrors({ ...errors, image: "" });
+        break;
+
+      case "nationality":
+        if (value === "")
+          setErrors({ ...errors, nationality: "Campo requerido" });
+        else setErrors({ ...errors, nationality: "" });
+        break;
+
+      case "dob":
+        break;
+
+      case "teams":
+        if (form.teams.length === 0)
+          setErrors({
+            ...errors,
+            teams: "Debe seleccionar al menos un equipo",
+          });
+        else setErrors({ ...errors, teams: "" });
+        break;
+
+      default:
+        break;
+    }
+  };
 
   const controlSubmit = () => {
     let aux = true; //que desabilite el botón
     for (let error in errors) {
-      if (errors[error] === "") aux = false;
+      if (errors[error] !== "") aux = false;
       else {
-        aux = false;
+        aux = true;
         break;
       }
     }
@@ -63,74 +128,105 @@ const Create = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>Name: </label>
-        <input
-          name="name"
-          type="text"
-          value={form.name}
-          onChange={handleChange}
-        />
-        {errors.name}
+      <BackLink to="/home">Back Home</BackLink>
+      <ContainerForm>
+        <TagForm onSubmit={handleSubmit}>
+          <LabelForm>Name: </LabelForm>
+          <InputForm
+            name="name"
+            type="text"
+            value={form.name}
+            onChange={handleChange}
+          />
+          {errors.name}
 
-        <label>Surname:</label>
-        <input
-          name="surname"
-          type="text"
-          value={form.surname}
-          onChange={handleChange}
-        />
-        {errors.surname}
+          <LabelForm>Surname:</LabelForm>
+          <InputForm
+            name="surname"
+            type="text"
+            value={form.surname}
+            onChange={handleChange}
+          />
+          {errors.surname}
 
-        <label>Description:</label>
-        <input
-          name="description"
-          type="text"
-          value={form.description}
-          onChange={handleChange}
-        />
-        {errors.description}
+          <LabelForm>Description:</LabelForm>
+          <InputForm
+            name="description"
+            type="text"
+            value={form.description}
+            onChange={handleChange}
+          />
+          {errors.description}
 
-        <label>Image: </label>
-        <input
-          name="image"
-          type="url"
-          value={form.image}
-          onChange={handleChange}
-        />
-        {errors.image}
+          <LabelForm>Image: </LabelForm>
+          <InputForm
+            name="image"
+            type="url"
+            value={form.image}
+            onChange={handleChange}
+          />
+          {errors.image}
 
-        <label>Nationality: </label>
-        <input
-          name="nationality"
-          type="text"
-          value={form.nationality}
-          onChange={handleChange}
-        />
-        {errors.nationality}
+          <div>
+            <LabelForm>Nationality: </LabelForm>
+            <select
+              name="nationality"
+              type="text"
+              value={form.nationality}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select a country
+              </option>
+              {countries.map((country) => (
+                <option key={country.name} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          {errors.nationality}
 
-        <label>Birthday: </label>
-        <input
-          name="dob"
-          type="text"
-          value={form.dob}
-          onChange={handleChange}
-        />
-        {errors.dob}
+          <LabelForm>Birthday: </LabelForm>
+          <InputForm
+            name="dob"
+            type="text"
+            value={form.dob}
+            onChange={handleChange}
+          />
+          {errors.dob}
 
-        <label>Teams:</label>
-        <select name="teams" value={form.teams} onChange={handleTeamChange}>
-          {Teams.map((t) => (
-            <option key={t} value={d} />
-          ))}
-        </select>
-        {errors.teams}
+          <TeamsContainer>
+            <LabelForm>Teams:</LabelForm>
+            <div>
+              <input
+                type="checkbox"
+                id="selectAllTeams"
+                checked={teams.length === form.teams.length}
+                onChange={() => handleTeamCheckboxChange("selectAllTeams")}
+              />
+              <label htmlFor="selectAllTeams">Select All Teams</label>
+            </div>
+            {teams.map((team) => (
+              <div key={team}>
+                <input
+                  type="checkbox"
+                  id={team}
+                  value={team}
+                  checked={form.teams.includes(team)}
+                  onChange={() => handleTeamCheckboxChange(team)}
+                />
+                <label htmlFor={team}>{team}</label>
+              </div>
+            ))}
+          </TeamsContainer>
+          {errors.teams}
 
-        <button name="new_temperament" type="button" onClick={handleChange}>
-          Create driver
-        </button>
-        <input disabled={controlSubmit()} type="submit" />
-      </form>
+          <SubmitBtn disabled={controlSubmit()} type="submit">
+            Crear Driver
+          </SubmitBtn>
+        </TagForm>
+      </ContainerForm>
     </div>
   );
 };

@@ -6,6 +6,7 @@ const getDriversByNameHandler = async (req, res) => {
     const { name } = req.query;
 
     const driverByName = await getDriversByName(name);
+    console.log(!driverByName.length);
 
     return res.status(200).json(driverByName);
   } catch (error) {

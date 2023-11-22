@@ -5,6 +5,7 @@ import Landing from "./Views/Landing/Landing";
 import Home from "./Views/Home/Home";
 import NavBar from "./Components/NavBar/NavBar";
 import Detail from "./Views/Detail/Detail";
+import Create from "./Views/Create/Create";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
   getDrivers,
@@ -20,14 +21,14 @@ function App() {
     dispatch(getDrivers());
   }, []);
 
+  const isNavBarVisible = !["/", "/detail/:id", "/create"].includes(pathname);
   return (
     <div>
-      {/* {pathname !== "/" && pathname !== "/detail/:id" && (
+      {/* {pathname !== "/" && !pathname.startsWith("/detail/" ) && (
         <NavBar getDriversByName={getDriversByName} />
       )} */}
-      {pathname !== "/" && !pathname.startsWith("/detail/") && (
-        <NavBar getDriversByName={getDriversByName} />
-      )}
+
+      {isNavBarVisible && <NavBar getDriversByName={getDriversByName} />}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
@@ -35,7 +36,7 @@ function App() {
           path="/detail/:id"
           element={<Detail getDriversDetails={getDriversDetails} />}
         />
-        {/* <Route path="/create" element={<Create/>}/>  */}
+        <Route path="/create" element={<Create />} />
       </Routes>
     </div>
   );

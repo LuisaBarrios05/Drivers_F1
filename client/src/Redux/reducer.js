@@ -7,7 +7,7 @@ import {
   FILTER_TEAMS,
   GET_TEAMS,
   FILTER_ORIGIN,
-  //POST_DRIVERS,
+  POST_DRIVERS,
 } from "./action-types";
 
 let initialState = {
@@ -15,6 +15,7 @@ let initialState = {
   driversCopy: [],
   driversDetail: [],
   teams: [],
+  form: [],
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -28,7 +29,7 @@ export default function rootReducer(state = initialState, action) {
     case GET_DRIVERS_BY_NAME:
       return {
         ...state,
-        drivers: action.payload,
+        driversCopy: action.payload,
       };
     case DRIVERS_DETAILS:
       return {
@@ -43,7 +44,7 @@ export default function rootReducer(state = initialState, action) {
     case ORDER_BIRTHDAY:
       return {
         ...state,
-        drivers: action.payload,
+        driversCopy: action.payload,
       };
     case FILTER_TEAMS:
       return {
@@ -59,6 +60,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         driversCopy: action.payload,
+      };
+    case POST_DRIVERS:
+      return {
+        ...state,
+        form: action.payload,
       };
     default:
       return { ...state };

@@ -36,17 +36,12 @@ const getDriversByName = async (name) => {
         teams: driver.teams,
       };
     });
-    console.log(db);
+
     if (!foundDriversAPI.length) {
       foundDriversAPI = db.drivers
         .filter((driver) => {
           const forename = driver.name.forename;
           const isMatch = forename.startsWith(name);
-
-          // Depuración: Imprimir información
-          console.log(
-            `Comparando ${forename} con ${name}. Coincide: ${isMatch}`
-          );
 
           return isMatch;
         })
