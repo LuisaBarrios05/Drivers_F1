@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Logo, Text } from "./Landing.Styles";
+import { Logo, Text, Btn } from "./Landing.Styles";
 
 function Landing() {
   const imagUrl =
@@ -9,7 +9,7 @@ function Landing() {
       <Logo src={imagUrl} alt="logo" />
       <Text>Welcome to F1 Drivers</Text>
       <Link to="/home">
-        <button>Get in</button>
+        <Btn>Get in</Btn>
       </Link>
     </div>
   );

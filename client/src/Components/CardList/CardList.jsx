@@ -1,10 +1,30 @@
 import styled from "styled-components";
 import Card from "../Card/Card";
+import Pagination from "../Pagination/Pagination";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDrivers } from "../../Redux/actions";
 
-function CardList({ drivers }) {
+function CardList({ currentPage, setCurrentPage, driversPerPage }) {
+  const drivers = useSelector((state) => state.driversCopy); //obtener datos del estado global.
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDrivers());
+  }, []);
+
+  const indexOfLastDriver = currentPage * driversPerPage;
+  const indexOfFirstDriver = indexOfLastDriver - driversPerPage;
+  const currentDriver = drivers.slice(indexOfFirstDriver, indexOfLastDriver);
+
+  const paginate = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div>
-      {drivers.map(
+      {currentDriver.map(
         ({
           id,
           name,
@@ -30,6 +50,13 @@ function CardList({ drivers }) {
           );
         }
       )}
+      <Pagination
+        driversPerPage={driversPerPage}
+        currentPage={currentPage}
+        paginate={paginate}
+        setCurrentPage={setCurrentPage}
+        totalPosts={drivers.length}
+      />
     </div>
   );
 }

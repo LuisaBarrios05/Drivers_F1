@@ -208,15 +208,13 @@ export const postDrivers = (form) => {
   return async (dispatch) => {
     try {
       const response = await axios.post("http://localhost:3001/drivers", form);
-
+      alert("Driver created successfully");
       dispatch({
         type: POST_DRIVERS,
         payload: response.data,
       });
-
-      console.log("Driver created successfully", response.data);
     } catch (error) {
-      console.error("Error creating driver", error);
+      alert("Error creating driver, try again");
     }
   };
 };

@@ -16,6 +16,7 @@ import {
   orderByName,
   getTeams,
   filterByOrigin,
+  getDrivers,
 } from "../../Redux/actions";
 
 export default function NavBar({ getDriversByName }) {
@@ -61,6 +62,7 @@ export default function NavBar({ getDriversByName }) {
 
   const imagUrl =
     "https://1000marcas.net/wp-content/uploads/2020/01/logo-F1.png";
+
   return (
     <NavContainer>
       <TopContainer>
@@ -70,6 +72,9 @@ export default function NavBar({ getDriversByName }) {
       <div>
         <Order>
           <SearchBar getDriversByName={getDriversByName} />
+
+          <button onClick={() => dispatch(getDrivers())}>Reset filters</button>
+
           <select
             name="orderByName"
             defaultValue=""

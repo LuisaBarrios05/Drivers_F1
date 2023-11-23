@@ -21,7 +21,7 @@ export default function SearchBar({ getDriversByName }) {
         type="search"
         name="search"
         value={name}
-        placeholder="Ingrese nombre"
+        placeholder="Insert name..."
       />
       <Btn onClick={handleGetDriversByName}>Search</Btn>
     </div>

@@ -21,13 +21,10 @@ function App() {
     dispatch(getDrivers());
   }, []);
 
-  const isNavBarVisible = !["/", "/detail/:id", "/create"].includes(pathname);
+  const isNavBarVisible =
+    !["/", "/create"].includes(pathname) && !pathname.startsWith("/detail/");
   return (
     <div>
-      {/* {pathname !== "/" && !pathname.startsWith("/detail/" ) && (
-        <NavBar getDriversByName={getDriversByName} />
-      )} */}
-
       {isNavBarVisible && <NavBar getDriversByName={getDriversByName} />}
       <Routes>
         <Route path="/" element={<Landing />} />
