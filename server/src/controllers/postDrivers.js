@@ -6,15 +6,7 @@ const postDrivers = async (req, res) => {
     const { name, surname, description, image, nationality, dob, teams } =
       req.body;
 
-    if (
-      !name ||
-      !surname
-      // !description ||
-      // !image ||
-      // !nationality ||
-      // !dob ||
-      // !teams
-    ) {
+    if (!name || !surname) {
       res.status(400).json({ error: "Faltan datos para crear al driver." });
     }
 
@@ -41,7 +33,7 @@ const postDrivers = async (req, res) => {
       }
     }
 
-    //obtener los temperamentos asociados al driver.
+    //obtener los teams asociados al driver.
     const teamsAsociados = await driverCreated.getTeams();
 
     driverCreated = {
@@ -55,18 +47,6 @@ const postDrivers = async (req, res) => {
     };
 
     return driverCreated;
-    //{
-    //   message: "Driver creado con éxito.",
-    //   data: {
-    //     name: driverCreated.name,
-    //     surname: driverCreated.surname,
-    //     description: driverCreated.description,
-    //     image: driverCreated.image,
-    //     nationality: driverCreated.nationality,
-    //     dob: driverCreated.dob,
-    //     teams: teamsAsociados.map((team) => team.name),
-    //   },
-    // };
   } catch (error) {
     console.log(error);
     throw new error("Error al crear el driver en la base de datos.");

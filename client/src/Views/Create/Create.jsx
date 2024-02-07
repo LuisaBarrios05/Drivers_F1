@@ -31,8 +31,8 @@ const Create = () => {
 
   const teams = useSelector((state) => state.teams);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
     validate(name, value);
   };
@@ -72,59 +72,9 @@ const Create = () => {
     teams: "Debe seleccionar al menos un equipo.",
   });
 
-  // //validation
-  // const validate = (name, value) => {
-  //   switch (name) {
-  //     case "name":
-  //       if (value === "") setErrors({ ...errors, name: "Campo requerido" });
-  //       else if (value.length > 20)
-  //         setErrors({ errors, name: "Máximo 20 caracteres." });
-  //       else setErrors({ ...errors, name });
-  //       break;
-
-  //     case "surname":
-  //       if (value === "") setErrors({ ...errors, surname: "Campo requerido" });
-  //       else if (value.length > 20)
-  //         setErrors({ errors, surname: "Máximo 20 caracteres." });
-  //       else setErrors({ ...errors, surname });
-  //       break;
-
-  //     case "description":
-  //       break;
-
-  //     case "image":
-  //       if (value === "") setErrors({ ...errors, image: "Campo requerido" });
-  //       else if (!isValidUrl(value))
-  //         setErrors({ ...errors, image: "URL no válida" });
-  //       else setErrors({ ...errors, image: "" });
-  //       break;
-
-  //     case "nationality":
-  //       if (value === "")
-  //         setErrors({ ...errors, nationality: "Campo requerido" });
-  //       else setErrors({ ...errors, nationality: "" });
-  //       break;
-
-  //     case "dob":
-  //       break;
-
-  //     case "teams":
-  //       if (form.teams.length === 0)
-  //         setErrors({
-  //           ...errors,
-  //           teams: "Debe seleccionar al menos un equipo",
-  //         });
-  //       else setErrors({ ...errors, teams: "" });
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  // };
-
   // Validation
   const validate = (name, value) => {
-    const nameRegex = /^.{1,20}$/;
+    const nameRegex = /^[a-zA-Z\s]+$/;
     const surnameRegex = /^.{1,20}$/;
     const imageRegex = /^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)$/;
     const dobRegex = /^.{1,}$/;
@@ -133,7 +83,7 @@ const Create = () => {
       case "name":
         setErrors((prevErrors) => ({
           ...prevErrors,
-          name: nameRegex.test(value) ? "" : "Máximo 20 caracteres.",
+          name: nameRegex.test(value) ? "" : "no nums",
         }));
         break;
 
@@ -177,11 +127,6 @@ const Create = () => {
         else setErrors({ ...errors, teams: "" });
         break;
       default:
-        // setErrors((prevErrors) => ({
-        //   ...prevErrors,
-        //   teams:
-        //     form.teams.length > 0 ? "" : "Debe seleccionar al menos un equipo",
-        // }));
         break;
     }
   };

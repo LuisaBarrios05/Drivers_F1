@@ -18,7 +18,7 @@ function Pagination({
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const pageNumbers = [];
-
+  //cantidad de paginas que van a haber
   for (let i = 1; i <= Math.ceil(totalPosts / driversPerPage); i++) {
     pageNumbers.push(i);
   }
@@ -27,7 +27,6 @@ function Pagination({
     if (currentPage !== pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
-    console.log("aca next");
     if (currentPage + 1 > maxPageNumberLimit) {
       setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
