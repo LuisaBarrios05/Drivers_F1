@@ -8,6 +8,7 @@ import {
   ORDER_NAME,
   FILTER_ORIGIN,
   POST_DRIVERS,
+  FILTER_BY_TEAM_AND_ORIGIN,
   //, , ORDER_BIRTHDAY,
 } from "./action-types";
 
@@ -128,22 +129,11 @@ export const orderByBirthday = (selection) => {
 
 //FILTER_TEAMS
 export const filterByTeams = (selection) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
-      // const drivers = getState().drivers;
-      // let driversCopy = [...drivers];
-      const originalDrivers = getState().drivers; // Utiliza la lista original sin filtrar
-
-      let driversCopy = [...originalDrivers];
-
-      driversCopy = driversCopy.filter((driver) => {
-        if (driver.teams.includes(selection)) {
-          return driver;
-        }
-      });
       dispatch({
         type: FILTER_TEAMS,
-        payload: driversCopy,
+        payload: selection,
       });
     } catch (error) {
       console.log(error);
@@ -171,31 +161,60 @@ export const getTeams = () => {
 
 //FILTER_ORIGIN
 export const filterByOrigin = (selection) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: FILTER_ORIGIN,
+        payload: selection,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+//FILTER_BY_TEAM_AND_ORIGIN
+
+export const filterByTeamAndOrigin = () => {
   return async (dispatch, getState) => {
     try {
+      const originalDrivers = getState().drivers;
+      const teamsFilterState = getState().teamsFilter;
+      const originFilterState = getState().originFilter;
+
       const idRegex = /^-?\d+$/;
       const uuidRegex =
         /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-      const originalDrivers = getState().drivers; // Utiliza la lista original sin filtrar
 
       let driversCopy = [...originalDrivers];
-      if (selection === "api") {
+
+      if (teamsFilterState.length > 0) {
         driversCopy = driversCopy.filter((driver) => {
-          if (idRegex.test(driver.id)) {
-            return driver;
-          }
-        });
-      } else {
-        driversCopy = driversCopy.filter((driver) => {
-          if (uuidRegex.test(driver.id)) {
+          if (driver.teams.includes(teamsFilterState)) {
             return driver;
           }
         });
       }
-      dispatch({
-        type: FILTER_ORIGIN,
-        payload: driversCopy,
-      });
+      
+      if (originFilterState.length > 0) {
+        if (originFilterState === "api") {
+          driversCopy = driversCopy.filter((driver) => {
+            if (idRegex.test(driver.id)) {
+              return driver;
+            }
+          });
+        } else {
+          driversCopy = driversCopy.filter((driver) => {
+            if (uuidRegex.test(driver.id)) {
+              return driver;
+            }
+          });
+        }
+        dispatch({
+          type: FILTER_BY_TEAM_AND_ORIGIN,
+          payload: driversCopy,
+        });
+      }
     } catch (error) {
       console.log(error.message);
     }

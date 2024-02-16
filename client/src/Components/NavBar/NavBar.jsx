@@ -5,18 +5,19 @@ import {
   TopContainer,
   Logo,
   Btn,
+  ResetButton
 } from "./NavBarStyles";
 import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
-import {
-  filterByTeams,
-  orderByBirthday,
-  orderByName,
+import {getDrivers,
   getTeams,
+  orderByName,
+  orderByBirthday,
+  filterByTeams,
   filterByOrigin,
-  getDrivers,
+  filterByTeamAndOrigin
 } from "../../Redux/actions";
 
 export default function NavBar({ getDriversByName }) {
@@ -39,6 +40,13 @@ export default function NavBar({ getDriversByName }) {
   const handleFilterByTeamsChange = (event) => {
     const selection = event.target.value;
     dispatch(filterByTeams(selection));
+    dispatch(filterByTeamAndOrigin())
+  };
+
+  const handleFilterByOriginChange = (event) => {
+    const selection = event.target.value;
+    dispatch(filterByOrigin(selection));
+    dispatch(filterByTeamAndOrigin())
   };
 
   //getTeams
@@ -54,11 +62,9 @@ export default function NavBar({ getDriversByName }) {
       });
   }, [dispatch]);
 
+
   //filterByTeams
-  const handleFilterByOriginChange = (event) => {
-    const selection = event.target.value;
-    dispatch(filterByOrigin(selection));
-  };
+
 
   const imagUrl =
     "https://1000marcas.net/wp-content/uploads/2020/01/logo-F1.png";
@@ -73,7 +79,7 @@ export default function NavBar({ getDriversByName }) {
         <Order>
           <SearchBar getDriversByName={getDriversByName} />
 
-          <button onClick={() => dispatch(getDrivers())}>Reset filters</button>
+          <ResetButton onClick={() => dispatch(getDrivers())}>Reset filters</ResetButton>
 
           <select
             name="orderByName"
