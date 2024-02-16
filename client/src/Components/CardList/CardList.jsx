@@ -19,7 +19,7 @@ function CardList({ currentPage, setCurrentPage, driversPerPage }) {
   const currentDriver = drivers.slice(indexOfFirstDriver, indexOfLastDriver);
 
   const paginate = (page) => {
-    setCurrentPage(page);
+    dispatch (setCurrentPage(page));
   };
 
   return (

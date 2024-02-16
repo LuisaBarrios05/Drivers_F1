@@ -9,6 +9,7 @@ import {
   FILTER_ORIGIN,
   POST_DRIVERS,
   FILTER_BY_TEAM_AND_ORIGIN,
+  SET_CURRENT_PAGE
 } from "./action-types";
 
 let initialState = {
@@ -19,6 +20,7 @@ let initialState = {
   teamsFilter: [],
   teams: [],
   form: [],
+  currentPageState: 1,
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -74,6 +76,11 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         form: action.payload,
       };
+      case SET_CURRENT_PAGE:
+        return {
+          ...state,
+          currentPageState: action.payload,
+        }
     default:
       return { ...state };
   }

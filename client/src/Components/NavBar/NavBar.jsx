@@ -17,7 +17,8 @@ import {getDrivers,
   orderByBirthday,
   filterByTeams,
   filterByOrigin,
-  filterByTeamAndOrigin
+  filterByTeamAndOrigin,
+  setCurrentPage
 } from "../../Redux/actions";
 
 export default function NavBar({ getDriversByName }) {
@@ -41,12 +42,14 @@ export default function NavBar({ getDriversByName }) {
     const selection = event.target.value;
     dispatch(filterByTeams(selection));
     dispatch(filterByTeamAndOrigin())
+    dispatch(setCurrentPage(1)) // Resetear la página en 1
   };
 
   const handleFilterByOriginChange = (event) => {
     const selection = event.target.value;
     dispatch(filterByOrigin(selection));
     dispatch(filterByTeamAndOrigin())
+    dispatch(setCurrentPage(1))
   };
 
   //getTeams

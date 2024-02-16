@@ -9,6 +9,7 @@ import {
   FILTER_ORIGIN,
   POST_DRIVERS,
   FILTER_BY_TEAM_AND_ORIGIN,
+  SET_CURRENT_PAGE
   //, , ORDER_BIRTHDAY,
 } from "./action-types";
 
@@ -238,3 +239,18 @@ export const postDrivers = (form) => {
     }
   };
 };
+
+//SET_CURRENT_PAGE
+
+export const setCurrentPage = (currentPage) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: SET_CURRENT_PAGE,
+         payload: currentPage,
+      })
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+}
