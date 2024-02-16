@@ -195,7 +195,7 @@ export const filterByTeamAndOrigin = () => {
           }
         });
       }
-      
+
       if (originFilterState.length > 0) {
         if (originFilterState === "api") {
           driversCopy = driversCopy.filter((driver) => {
@@ -210,11 +210,12 @@ export const filterByTeamAndOrigin = () => {
             }
           });
         }
-        dispatch({
-          type: FILTER_BY_TEAM_AND_ORIGIN,
-          payload: driversCopy,
-        });
       }
+
+      dispatch({
+        type: FILTER_BY_TEAM_AND_ORIGIN,
+        payload: driversCopy,
+      });
     } catch (error) {
       console.log(error.message);
     }
