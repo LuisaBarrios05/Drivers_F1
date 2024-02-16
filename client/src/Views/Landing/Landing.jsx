@@ -9,7 +9,7 @@ function Landing() {
       <Logo src={imagUrl} alt="logo" />
       <Text>Welcome to F1 Drivers</Text>
       <Link to="/home">
-        <Btn>Get in</Btn>
+        <Btn>GET IN</Btn>
       </Link>
     </div>
   );

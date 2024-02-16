@@ -4,6 +4,7 @@ import {
   PaginationComponent,
   UlPagination,
   LiPagination,
+  CurrentPageIndicator
 } from "./PaginationStyles";
 
 function Pagination({
@@ -57,7 +58,10 @@ function Pagination({
                     className={currentPage === page ? "active" : ""}
                     onClick={() => paginate(page)}
                   >
-                    {page}
+                    {currentPage === page && (
+                      <CurrentPageIndicator>{page}</CurrentPageIndicator>
+                    )}
+                    {currentPage !== page && page}
                   </ButtonPage>
                 </LiPagination>
               );
